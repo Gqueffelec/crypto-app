@@ -13,12 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("unused")
-public class CryptoAction {
+public class Asset {
 	private int id;
-	private String name;
 	private int	numberOfAction;
 	private double buyPrice;
-	private double actualPrice;
 	private double deltaPrice;
 	private LocalDate buyDate;
 }

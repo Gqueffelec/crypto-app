@@ -17,6 +17,9 @@ public class CryptoDaoImpl implements CryptoDao {
 Connection con;
 	
 	public CryptoDaoImpl() {
+		if (SQLConnection.con==null) {
+			SQLConnection.connect();
+		}
 		con = SQLConnection.con;
 	}
 
@@ -54,6 +57,7 @@ Connection con;
 			stmt.setString(2, o.getLabel());
 			stmt.setDouble(3, o.getActualPrice());
 			stmt.setInt(4, o.getId());
+			System.out.println(stmt);
 			results = stmt.executeUpdate();
 //			logger.info("données entrés libelle  " + champ +" = "+ value +", " + " log id " + System.currentTimeMillis());
 		} catch (SQLException e) {
@@ -107,22 +111,44 @@ Connection con;
 
 	@Override
 	public List<CryptoCurrency> getAll() {
-		String request = "select * from Vehicule order by id";
+		String request = "select * from cryptocurrency order by id";
 		ResultSet results = null;
-		List<CryptoCurrency> listVehicule = new LinkedList<CryptoCurrency>();
+		List<CryptoCurrency> list = new LinkedList<CryptoCurrency>();
 		try {
 			PreparedStatement stmt = this.con.prepareStatement(request);
 			results = stmt.executeQuery();
 			while (results.next()) {
-				CryptoCurrency vehicule = CryptoCurrency.builder().id(results.getInt("id")).name(results.getString("name"))
+				CryptoCurrency crypto = CryptoCurrency.builder().id(results.getInt("id")).name(results.getString("name"))
 						.label(results.getString("label")).actualPrice(results.getDouble("actualprice")).build();
-				listVehicule.add(vehicule);
+				list.add(crypto);
 			}
 		} catch (SQLException e) {
 //			logger.error(e.getMessage() + " log id " + System.currentTimeMillis(), e);
 		}
 		if (results != null) {
-			return listVehicule;
+			return list;
+		}
+		return null;
+	}
+
+	@Override
+	public List<CryptoCurrency> getCryptoWithoutAssets() {
+		String request = "select c2.id ,c2.name,c2.label ,c2.actualprice from cryptocurrency c2 left join asset a on a.id = c2.id where isnull(numberofaction);";
+		ResultSet results = null;
+		List<CryptoCurrency> list = new LinkedList<CryptoCurrency>();
+		try {
+			PreparedStatement stmt = this.con.prepareStatement(request);
+			results = stmt.executeQuery();
+			while (results.next()) {
+				CryptoCurrency crypto = CryptoCurrency.builder().id(results.getInt("id")).name(results.getString("name"))
+						.label(results.getString("label")).actualPrice(results.getDouble("actualprice")).build();
+				list.add(crypto);
+			}
+		} catch (SQLException e) {
+//			logger.error(e.getMessage() + " log id " + System.currentTimeMillis(), e);
+		}
+		if (results != null) {
+			return list;
 		}
 		return null;
 	}
