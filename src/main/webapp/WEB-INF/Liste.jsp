@@ -1,9 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Insert title here</title>
-</head>
-<body>
-<p>Test listing</p>
-</body>
-</html>
+<div>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <td>Name</td>
+                <td>Count</td>
+                <td>Buying Price</td>
+                <td>Actual Price</td>
+                <td>Delta</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody id="assetslisting">
+
+        </tbody>
+    </table>
+</div>

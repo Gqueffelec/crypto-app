@@ -11,8 +11,10 @@
 	</welcome-file-list>
 	<jsp-config>
 		<jsp-property-group>
+		
 			<url-pattern> *.jsp </url-pattern>
 			<include-prelude>/WEB-INF/common/jstlLib.jsp</include-prelude>
+			<include-coda>/WEB-INF/common/footer.jsp</include-coda>
 		</jsp-property-group>
 	</jsp-config>
 </web-app>
