@@ -1,4 +1,3 @@
-
 <div class="container-fluid h-75">
 	<div class="row justify-content-center h-15">
 		<h1>Welcome to CryptApp</h1>
@@ -12,13 +11,6 @@
 			<a href="${crypto }">
 				<button type="button" class="btn btn-info custom">To
 					CryptoCurrency Management</button>
-			</a>
-		</div>
-		<div class="col-xs align-self-center">
-			<c:url value="Assets" var="asset"></c:url>
-			<a href="${asset}">
-				<button type="button" class="btn btn-info custom">To my
-					Assets Management</button>
 			</a>
 		</div>
 		<div class="col-xs align-self-center">

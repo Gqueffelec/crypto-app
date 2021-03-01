@@ -1,8 +1,7 @@
+var updateId;
+var removeId;
 $(document).ready(function () {
-    updateData();
-    refresh();
-    updateNewAsset();
-    updateAssetsList();
+    update();
     $("#showlist").hide();
     $("#create").on("click", function () {
         let cryptoName = $("#add").find(".name").val();
@@ -16,7 +15,7 @@ $(document).ready(function () {
         }).done(function (msg) {
             alert(msg);
             $("#add").modal("hide");
-            updateNewAsset();
+            update();
         })
     });
     $("#remove").on("click", function () {
@@ -27,8 +26,7 @@ $(document).ready(function () {
         }).done(function (msg) {
             $("#rmv").modal("hide");
             alert(msg);
-            updateData();
-            updateNewAsset();
+            update();
         })
     });
     $("#updatebutton").on("click", function () {
@@ -49,8 +47,7 @@ $(document).ready(function () {
         }).done(function (msg) {
             alert(msg);
             $("#upd").modal("hide");
-            updateData();
-            refresh();
+            update();
         })
     });
     $("#selectId").on('click', function () {
@@ -93,13 +90,84 @@ $(document).ready(function () {
         }).done(function (msg) {
             alert(msg);
             $("#add").modal("hide");
-            updateNewAsset();
-            refresh();
+            update();
         })
     })
+    $("#updateAssetData .numberofaction").on("change", function () {
+        let value = parseInt($(this).val());
+        if (value >= 0) {
+            console.log(value);
+            $("#updateAssetButton").removeAttr("disabled");
+        } else {
+            $("#updateAssetButton").attr("disabled", true);
+        }
+    })
+    $("#updateAssetButton").on('click', function () {
+        let updateAssetNumber = $("#updateAssetData .numberofaction").val();
+        if (updateAssetNumber < 0) {
+            return;
+        }
+        console.log(updateAssetNumber);
+        jQuery.get("Assets", {
+            asset: "update",
+            id: updateId,
+            numberofaction: updateAssetNumber
+        }).done(function (msg) {
+            alert(msg);
+            $("#updateAsset").modal("hide");
+            update();
+        })
+    })
+    $("#removeCheck .yes").on('change', function () {
+        console.log($(this).prop("checked"));
+        if ($(this).prop("checked")) {
+            $("#removeAssetButton").removeAttr("disabled");
+        } else {
+            $("#removeAssetButton").attr("disabled", true);
+        }
+    })
+    $("#removeAssetButton").on('click', function () {
 
+        jQuery.get("Assets", {
+            asset: "remove",
+            id: removeId
+        }).done(function (msg) {
+            alert(msg);
+            $("#removeAsset").modal("hide");
+            update();
+            console.log("remove done");
+        })
+    })
 });
 
+$(window).on('load', function () {
+    updateButton();
+})
+
+function updateButton() {
+    $.each($(".updateAsset"), function () {
+        $(this).off('click');
+        $(this).on('click', function () {
+            $("#updateAssetData .numberofaction").val("");
+            updateId = parseInt(($(this).attr('id')).charAt(4));
+        })
+    })
+    $.each($(".removeAsset"), function () {
+        $(this).off('click');
+        $(this).on('click', function () {
+            $("#removeCheck .yes").prop("checked", false);
+            removeId = parseInt(($(this).attr('id')).charAt(6));
+            console.log(removeId);
+        })
+    })
+}
+
+function update() {
+    updateData();
+    refresh();
+    updateNewAsset();
+    updateAssetsList();
+}
 
 function updateAssetsList() {
     jQuery.get("list", {
@@ -109,7 +177,6 @@ function updateAssetsList() {
         table.empty();
         console.log(assetList);
         $.each(assetList, function (id, assets) {
-            console.log(assets[1]);
             table.append("<tr></tr>");
             let tr = $("#assetslisting > tr:last-child");
             tr.append("<td>" + assets[0] + "</td>");
@@ -117,8 +184,9 @@ function updateAssetsList() {
             tr.append("<td>" + assets[2] + "</td>");
             tr.append("<td>" + assets[3] + "</td>");
             tr.append("<td>" + assets[4] + "</td>");
-            //       tr.append("<td><i class='fas fa-pen edit" + id + "'></i><i class='far fa-trash-alt trash" + id + "'></i></td>")
+            tr.append("<td><span class='updateAsset' id='edit" + assets[5] + "'><i class='fas fa-pen' data-toggle='modal' data-target='#updateAsset'> </i></span><span class='removeAsset' id='remove" + assets[5] + "'><i class='far fa-trash-alt' data-toggle='modal' data-target='#removeAsset'> </i></span></td>")
         })
+        updateButton();
     })
 }
 
