@@ -1,20 +1,21 @@
 html, body {
-    height: 100%;
-  }
-
-body{
-    margin:0;
-    background-color: lightblue;
-padding-top: 70px; 
+	height: 100%;
 }
 
-thead{
-    font-weight: bold;
+body {
+	margin: 0;
+	background-color: lightblue;
+	padding-top: 70px;
 }
+
+thead {
+	font-weight: bold;
+}
+
 .navbar {
-    margin-top: -70px;
+	margin-top: -70px;
 }
 
-.custom{
-    width: 200px !important;
+.custom {
+	width: 200px !important;
 }

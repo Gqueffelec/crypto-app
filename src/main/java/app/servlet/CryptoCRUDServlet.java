@@ -1,7 +1,6 @@
 package app.servlet;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -57,6 +56,10 @@ public class CryptoCRUDServlet extends HttpServlet {
 				resp.getWriter().write("Wrong actual price format, please insert a number");
 				break;
 			}
+			if (temp<0) {
+				resp.getWriter().write("Price can't be negative");
+				break;
+			}
 			crypto = CryptoCurrency.builder().id(0).name(req.getParameter("name")).label(req.getParameter("label"))
 					.actualPrice(temp).build();
 			if (cryptoServ.create(crypto) == null) {
@@ -76,7 +79,11 @@ public class CryptoCRUDServlet extends HttpServlet {
 				resp.getWriter().write("Wrong id format, please insert a number");
 				break;
 			}
-			if (cryptoServ.delete(id)) {
+			if (new AssetService().getById(id)!=null) {
+				resp.getWriter().write("Failed Deletion, you still have Assets on this currency");
+				break;
+			}
+			if (!cryptoServ.delete(id)) {
 				resp.getWriter().write("Failed Deletion, check if Id exists or if you still have Assets");
 			} else {
 				resp.getWriter().write("Crypto Currency removed !");
@@ -94,6 +101,10 @@ public class CryptoCRUDServlet extends HttpServlet {
 				id = Integer.parseInt(req.getParameter("id"));
 			} catch (NumberFormatException e) {
 				resp.getWriter().write("Wrong actual price format, please insert a number");
+				break;
+			}
+			if (temp<0) {
+				resp.getWriter().write("Price can't be negative");
 				break;
 			}
 			crypto = CryptoCurrency.builder().id(id).name(req.getParameter("name")).label(req.getParameter("label"))

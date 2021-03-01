@@ -59,7 +59,7 @@ public class AssetDaoImpl implements AssetDao {
 			stmt.setDouble(2, o.getBuyPrice());
 			stmt.setDouble(3, o.getDeltaPrice());
 			stmt.setDate(4, Date.valueOf(o.getBuyDate()));
-			stmt.setInt(1, o.getId());
+			stmt.setInt(5, o.getId());
 			System.out.println(stmt);
 			results = stmt.executeUpdate();
 //			logger.info("données entrés libelle  " + champ +" = "+ value +", " + " log id " + System.currentTimeMillis());

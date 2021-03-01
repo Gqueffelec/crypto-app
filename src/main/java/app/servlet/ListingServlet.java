@@ -36,13 +36,14 @@ public class ListingServlet extends HttpServlet {
 		List<Asset> listAsset = new AssetService().getAll();
 		List<CryptoCurrency> listCrypto = new CryptoCurrencyService().getAll();
 		listCrypto.removeAll(new CryptoCurrencyService().getCryptoWithoutAsset());
-		String[][] prepareJsonData = new String[listAsset.size()][5];
+		String[][] prepareJsonData = new String[listAsset.size()][6];
 		for (int i = 0; i < listAsset.size(); i++) {
 			prepareJsonData[i][0] = listCrypto.get(i).getName();
 			prepareJsonData[i][1] = String.valueOf(listAsset.get(i).getNumberOfAction());
 			prepareJsonData[i][2] = String.valueOf(listAsset.get(i).getBuyPrice());
 			prepareJsonData[i][3] = String.valueOf(listCrypto.get(i).getActualPrice());
 			prepareJsonData[i][4] = String.valueOf(listAsset.get(i).getDeltaPrice());
+			prepareJsonData[i][5] = String.valueOf(listCrypto.get(i).getId());
 		}
 		String json = new Gson().toJson(prepareJsonData);
 		switch (action) {
